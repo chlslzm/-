@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>공룡 게임</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="startScreen" class="screen">
+        <h1>공룡 게임</h1>
+        <button id="startButton">게임 시작</button>
+        <div class="instructions">
+            스페이스바를 눌러 점프하세요!
+        </div>
+    </div>
+
+    <div id="gameContainer" class="screen hidden">
+        <div id="score">0</div>
+        <canvas id="gameCanvas" width="800" height="300"></canvas>
+        <button id="pauseButton" class="hidden">일시정지</button>
+    </div>
+
+    <div id="pauseScreen" class="screen hidden">
+        <h2>일시정지</h2>
+        <button id="resumeButton">게임 계속하기</button>
+        <button id="restartButton">게임 다시시작</button>
+    </div>
+
+    <div id="gameOverScreen" class="screen hidden">
+        <h2>게임 오버</h2>
+        <div id="finalScore">점수: 0</div>
+        <button id="restartGameButton">다시 시작</button>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>

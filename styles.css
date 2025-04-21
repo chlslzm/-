@@ -1,0 +1,108 @@
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+
+    font-family: 'Arial', sans-serif;
+    background-color: #ffffff;
+}
+
+.screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff;
+}
+
+.hidden {
+    display: none !important;
+}
+
+#startScreen {
+    text-align: center;
+    color: #535353;
+}
+
+#startScreen h1 {
+    font-size: 48px;
+    margin-bottom: 30px;
+}
+
+.instructions {
+    margin: 20px 0;
+    font-size: 18px;
+    color: #666;
+}
+
+button {
+    padding: 12px 24px;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    background-color: #535353;
+    color: white;
+    cursor: pointer;
+    margin: 10px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #666;
+}
+
+#gameContainer {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#gameCanvas {
+    border-bottom: 2px solid #535353;
+    background-color: #ffffff;
+}
+
+#score {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 24px;
+    color: #535353;
+    font-family: monospace;
+}
+
+#gameOverScreen {
+    text-align: center;
+    color: #535353;
+}
+
+#gameOverScreen h2 {
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+#finalScore {
+    font-size: 24px;
+    margin-bottom: 30px;
+    font-family: monospace;
+}
+
+#pauseScreen {
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #535353;
+    text-align: center;
+}
+
+#pauseScreen h2 {
+    font-size: 36px;
+    margin-bottom: 20px;
+}
