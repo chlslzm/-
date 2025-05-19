@@ -74,10 +74,14 @@ button:hover {
 #score {
     position: absolute;
     top: 20px;
-    right: 20px;
+    left: 20px;
     font-size: 24px;
     color: #535353;
     font-family: monospace;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 10px 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 #gameOverScreen {

@@ -1,0 +1,71 @@
+/* 모바일 전용 스타일 */
+@media (max-width: 768px) {
+    #gameCanvas {
+        width: 100%;
+        height: auto;
+        max-height: 80vh;
+    }
+
+    .instructions {
+        font-size: 14px;
+    }
+
+    #score {
+        font-size: 18px;
+        top: 10px;
+        left: 10px;
+    }
+
+    /* 조이스틱 컨테이너 */
+    #joystickContainer {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 120px;
+        height: 120px;
+        background-color: rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border: 2px solid rgba(83, 83, 83, 0.5);
+        display: none;
+        touch-action: none;
+    }
+
+    /* 조이스틱 핸들 */
+    #joystickHandle {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 50px;
+        height: 50px;
+        background-color: rgba(83, 83, 83, 0.8);
+        border-radius: 50%;
+        cursor: pointer;
+    }
+
+    /* 모바일에서만 조이스틱 표시 */
+    @media (hover: none) and (pointer: coarse) {
+        #joystickContainer {
+            display: block;
+        }
+
+        .instructions {
+            display: none;
+        }
+    }
+
+    /* 게임 오버 화면 조정 */
+    #gameOverScreen h2 {
+        font-size: 24px;
+    }
+
+    #finalScore {
+        font-size: 20px;
+    }
+
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+    }
+}

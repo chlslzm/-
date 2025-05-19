@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>소닉 달리기 게임</title>
+    <title>딸리기 게임</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="mobile.css">
 </head>
 <body>
     <div id="startScreen" class="screen">
-        <h1>소닉 달리기 게임</h1>
+        <h1>딸리기 게임</h1>
         <button id="startButton">게임 시작</button>
         <div class="instructions">
             스페이스바: 점프<br>
@@ -18,8 +19,11 @@
 
     <div id="gameContainer" class="screen hidden">
         <div id="score">0</div>
-        <canvas id="gameCanvas" width="800" height="300"></canvas>
+        <canvas id="gameCanvas" width="800" height="400"></canvas>
         <button id="pauseButton" class="hidden">일시정지</button>
+        <div id="joystickContainer">
+            <div id="joystickHandle"></div>
+        </div>
     </div>
 
     <div id="pauseScreen" class="screen hidden">
@@ -35,5 +39,6 @@
     </div>
 
     <script src="game.js"></script>
+    <script src="joystick.js"></script>
 </body>
 </html>
