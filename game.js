@@ -416,6 +416,14 @@ function startGame() {
 document.getElementById('startButton').addEventListener('click', startGame);
 document.getElementById('restartGameButton').addEventListener('click', startGame);
 
+     // 터치 이벤트 리스너 추가
+document.getElementById('gameCanvas').addEventListener('touchstart', (event) => {
+    if (game.state === GameState.PLAYING) {
+        event.preventDefault();
+        jump();
+    }
+}, { passive: false });
+
 document.addEventListener('keydown', (event) => {
     if (event.code === 'Space' && game.state === GameState.PLAYING) {
         event.preventDefault();
