@@ -28,7 +28,7 @@ const sonic = {
     jumping: false,
     doubleJumping: false,
     jumpForce: 15,  // 장애물을 넘을 수 있는 높이로 조정
-    doubleJumpForce: 10,  // 두 번째 점프의 힘
+    doubleJumpForce: 12, // 두 번째 점프의 힘은 더 약하게 설정
     gravity: 0.8,
     velocityY: 0,
     velocityX: 0,
@@ -114,20 +114,28 @@ function drawGround() {
     ctx.stroke();
 }
 
-// Load background image
-const backgroundImage = new Image();
-backgroundImage.src = '1747651131726.png';
-
 function drawBackground() {
-    // Draw background image
-    ctx.globalAlpha = 0.7; // Set transparency
-    ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
-    ctx.globalAlpha = 1.0; // Reset transparency
+    ctx.fillStyle = '#87CEEB';
+    ctx.fillRect(0, 0, canvas.width, canvas.height - game.groundHeight);
+    
+    // Draw moving clouds
+    game.backgroundX -= game.speed * 0.2;
+    if (game.backgroundX <= -canvas.width) game.backgroundX = 0;
+    
+    ctx.fillStyle = '#FFFFFF';
+    for (let i = 0; i < 3; i++) {
+        let cloudX = ((game.backgroundX + i * 300) % canvas.width);
+        ctx.beginPath();
+        ctx.arc(cloudX, 50, 20, 0, Math.PI * 2);
+        ctx.arc(cloudX + 20, 50, 25, 0, Math.PI * 2);
+        ctx.arc(cloudX + 40, 50, 20, 0, Math.PI * 2);
+        ctx.fill();
+    }
 }
 
 const obstacleTypes = [
-    { type: 'sword', color: '#808080', width: 32, height: 63 },
-    { type: 'bomb', color: '#000000', width: 41, height: 41 }
+    { type: 'sword', color: '#808080', width: 35, height: 70 },
+    { type: 'bomb', color: '#000000', width: 45, height: 45 }
 ];
 
 function createObstacle() {
@@ -261,22 +269,9 @@ function drawFruits() {
 }
 
 function updateObstacles() {
-    const baseMinGap = 300;  // 기본 최소 간격
-    const speedFactor = Math.max(0.7, 1 - (game.speed - 5) / 20);  // 속도가 빨라질수록 간격이 좁아짐
-    const obstacleType = obstacles.length > 0 ? obstacles[obstacles.length - 1].type : null;
-    
-    // 장애물 타입에 따른 간격 조정
-    let minGap = baseMinGap * speedFactor;
-    if (obstacleType === 'sword') {
-        minGap *= 1.2;  // 칼은 더 넓은 간격
-    } else if (obstacleType === 'bomb') {
-        minGap *= 0.9;  // 폭탄은 더 좁은 간격
-    }
-    
-    const randomGap = Math.random() * (400 * speedFactor);  // 랜덤 간격도 속도에 따라 조정
-    const totalGap = minGap + randomGap + (Math.random() > 0.7 ? 200 : 0);  // 30% 확률로 추가 간격
-    
-    if (obstacles.length === 0 || obstacles[obstacles.length - 1].x < canvas.width - totalGap) {
+    const minGap = 300;  // 최소 간격
+    const randomGap = Math.random() * 400;  // 0~400 사이의 추가 랜덤 간격
+    if (obstacles.length === 0 || obstacles[obstacles.length - 1].x < canvas.width - (minGap + randomGap)) {
         obstacles.push(createObstacle());
     }
 
@@ -322,7 +317,7 @@ function checkFruitCollection(sonic, fruit) {
 }
 
 function updateSonic() {
-    if (sonic.jumping || sonic.doubleJumping) {
+    if (sonic.jumping) {
         sonic.velocityY += sonic.gravity;
         sonic.y += sonic.velocityY;
 
@@ -350,8 +345,6 @@ function jump() {
     } else if (!sonic.doubleJumping) {
         sonic.doubleJumping = true;
         sonic.velocityY = -sonic.doubleJumpForce;
-        // 더블 점프 시 수평 속도 증가
-        sonic.velocityX = Math.min(sonic.velocityX + 5, sonic.maxSpeed);
     }
 }
 
@@ -410,7 +403,6 @@ function startGame() {
     fruits = [];
     sonic.y = canvas.height - game.groundHeight;
     sonic.jumping = false;
-    sonic.doubleJumping = false;
     sonic.velocityY = 0;
     sonic.velocityX = 0;
     sonic.isRunning = false;
