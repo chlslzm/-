@@ -11,7 +11,8 @@ const game = {
     speed: 3,  // 초기 속도를 40% 낮게 설정
     groundHeight: 30,
     backgroundX: 0,
-    speedMultiplier: 1.0005  // 속도 증가 계수 추가
+    speedMultiplier: 1.0005,  // 속도 증가 계수 추가
+    musicEnabled: true
 };
 
 const canvas = document.getElementById('gameCanvas');
@@ -26,9 +27,8 @@ const sonic = {
     width: 50,
     height: 50,
     jumping: false,
-    doubleJumping: false,
+    doubleJumped: false,
     jumpForce: 15,  // 장애물을 넘을 수 있는 높이로 조정
-    doubleJumpForce: 12, // 두 번째 점프의 힘은 더 약하게 설정
     gravity: 0.8,
     velocityY: 0,
     velocityX: 0,
@@ -324,7 +324,7 @@ function updateSonic() {
         if (sonic.y > canvas.height - game.groundHeight) {
             sonic.y = canvas.height - game.groundHeight;
             sonic.jumping = false;
-            sonic.doubleJumping = false;
+            sonic.doubleJumped = false;
             sonic.velocityY = 0;
         }
     }
@@ -341,10 +341,11 @@ function updateSonic() {
 function jump() {
     if (!sonic.jumping) {
         sonic.jumping = true;
+        sonic.doubleJumped = false;
         sonic.velocityY = -sonic.jumpForce;
-    } else if (!sonic.doubleJumping) {
-        sonic.doubleJumping = true;
-        sonic.velocityY = -sonic.doubleJumpForce;
+    } else if (!sonic.doubleJumped) {
+        sonic.doubleJumped = true;
+        sonic.velocityY = -sonic.jumpForce;
     }
 }
 
@@ -363,6 +364,23 @@ function draw() {
     drawObstacles();
     drawFruits();
 }
+
+// 음악 컨트롤 초기화
+const bgMusic = document.getElementById('bgMusic');
+const toggleMusicBtn = document.getElementById('toggleMusic');
+
+toggleMusicBtn.addEventListener('click', () => {
+    game.musicEnabled = !game.musicEnabled;
+    if (game.musicEnabled) {
+        if (game.state === GameState.PLAYING) {
+            bgMusic.play();
+        }
+        toggleMusicBtn.textContent = '🔊 음악 켜기/끄기';
+    } else {
+        bgMusic.pause();
+        toggleMusicBtn.textContent = '🔈 음악 켜기/끄기';
+    }
+});
 
 function gameLoop() {
     if (game.state === GameState.PLAYING) {
@@ -386,6 +404,7 @@ function gameLoop() {
                 document.getElementById('finalScore').textContent = `점수: ${Math.floor(game.score / 10)}`;
                 document.getElementById('gameOverScreen').classList.remove('hidden');
                 document.getElementById('gameContainer').classList.add('hidden');
+                bgMusic.pause();
                 return;
             }
         }
@@ -410,24 +429,23 @@ function startGame() {
     document.getElementById('startScreen').classList.add('hidden');
     document.getElementById('gameContainer').classList.remove('hidden');
     document.getElementById('gameOverScreen').classList.add('hidden');
+    if (game.musicEnabled) {
+        document.getElementById('bgMusic').play();
+    }
     gameLoop();
 }
 
 document.getElementById('startButton').addEventListener('click', startGame);
 document.getElementById('restartGameButton').addEventListener('click', startGame);
 
-     // 터치 이벤트 리스너 추가
-document.getElementById('gameCanvas').addEventListener('touchstart', (event) => {
-    if (game.state === GameState.PLAYING) {
-        event.preventDefault();
-        jump();
-    }
-}, { passive: false });
-
 document.addEventListener('keydown', (event) => {
-    if (event.code === 'Space' && game.state === GameState.PLAYING) {
+    if (event.code === 'Space') {
         event.preventDefault();
-        jump();
+        if (game.state === GameState.PLAYING) {
+            jump();
+        } else if (game.state === GameState.GAME_OVER) {
+            startGame();
+        }
     } else if (event.code === 'ShiftLeft' && game.state === GameState.PLAYING) {
         sonic.isRunning = true;
     }
